@@ -1,3 +1,5 @@
+import Decimal from 'decimal.js';
+
 const input = document.querySelector(".calculator__input");
 const btns = document.querySelectorAll(".calculator__btn");
 
@@ -54,22 +56,33 @@ function toglePercent() {
         result = result = lastCount * 0.01; 
         input.value = result;
     } else {
+      if(sing === '+' || sing === '-') {
+        const value = +lastCount * +count / 100
+        input.value = removeTrailingZeros(value.toFixed(7));
+      } else if (sing === "×" || sing === "÷") {
+        const value = +count / 100
+        input.value = removeTrailingZeros(value.toFixed(7));
+      }
         percent = true;
     }
   
 }
 
+
 function countPercent() {
   if (percent) {
     if (lastCount) {
+      const lastCountDecimal = new Decimal(+lastCount);
+      const countDecimal = new Decimal(+count);
+
       if (sing === "-") {
-            result = +lastCount - (+lastCount * +count) / 100;
+        result = lastCountDecimal.minus(lastCountDecimal.times(countDecimal).dividedBy(100));
       } else if (sing === "+") {
-        result = +lastCount + (+lastCount * +count) / 100;
+        result = lastCountDecimal.plus(lastCountDecimal.times(countDecimal).dividedBy(100));
       } else if (sing === "×") {
-        result = (+lastCount * +count) / 100;
+        result = lastCountDecimal.times(countDecimal).dividedBy(100);
       } else if (sing === "÷") {
-        result = +lastCount / (+count / 100);
+        result = lastCountDecimal.dividedBy(countDecimal.dividedBy(100));
       }
     }
   }
@@ -80,7 +93,7 @@ function getNegativeOrPositiveNumber() {
   let target = result || count || lastCount;
 
   if (target) {
-    target = +target > 0 ? `-${target}` : `${target.slice(1)}`;
+    target = +target >= 0 ? `-${target}` : `${target.slice(1)}`;
     input.value = target;
   }
 
@@ -96,25 +109,24 @@ function resetValues() {
 }
 
 function countNumber() {
-    console.log(lastCount)
-    console.log(count)
-    console.log(0.2 + 0.4)
+  const lastCountDecimal = new Decimal(+lastCount);
+  const countDecimal = new Decimal(+count);
   countPercent();
 
   if (result) {
-    input.value = result;
+    input.value = removeTrailingZeros(result.toFixed(7));
   } else if (lastCount && count && sing) {
     result =
       sing === "×"
-        ? +lastCount * +count
+        ? lastCountDecimal.times(countDecimal)
         : sing === "+"
-        ? +lastCount + +count
+        ? lastCountDecimal.plus(countDecimal)
         : sing === "-"
-        ? +lastCount - +count
+        ? lastCountDecimal.minus(countDecimal)
         : sing === "÷"
-        ? +lastCount / +count
+        ? lastCountDecimal.dividedBy(countDecimal)
         : null;
-    input.value = result;
+    input.value = removeTrailingZeros(result.toFixed(7));
   }
 }
 
@@ -156,4 +168,10 @@ function getOperations(value) {
   } else {
     sing = value;
   }
+}
+
+function removeTrailingZeros(number) {
+  let str = number.toString();
+  let trimmed = str.replace(/\.?0+$/, '');
+  return trimmed;
 }
