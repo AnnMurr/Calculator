@@ -1,4 +1,4 @@
-import Decimal from 'decimal.js';
+import Decimal from "decimal.js";
 
 const input = document.querySelector(".calculator__input");
 const btns = document.querySelectorAll(".calculator__btn");
@@ -24,9 +24,9 @@ function showNumber(event) {
     case "7":
     case "8":
     case "9":
-        input.value === "0" && (input.value = "");
-        typeNumber(event.target.innerText);
-    break;
+      input.value === "0" && (input.value = "");
+      typeNumber(event.target.innerText);
+      break;
     case ".":
       typeNumber(event.target.innerText);
       break;
@@ -52,22 +52,20 @@ function showNumber(event) {
 }
 
 function toglePercent() {
-    if(lastCount && !count) {
-        result = result = lastCount * 0.01; 
-        input.value = result;
-    } else {
-      if(sing === '+' || sing === '-') {
-        const value = +lastCount * +count / 100
-        input.value = removeTrailingZeros(value.toFixed(7));
-      } else if (sing === "×" || sing === "÷") {
-        const value = +count / 100
-        input.value = removeTrailingZeros(value.toFixed(7));
-      }
-        percent = true;
+  if (lastCount && !count) {
+    result = result = lastCount * 0.01;
+    input.value = result;
+  } else {
+    if (sing === "+" || sing === "-") {
+      const value = (+lastCount * +count) / 100;
+      input.value = removeTrailingZeros(value.toFixed(7));
+    } else if (sing === "×" || sing === "÷") {
+      const value = +count / 100;
+      input.value = removeTrailingZeros(value.toFixed(7));
     }
-  
+    percent = true;
+  }
 }
-
 
 function countPercent() {
   if (percent) {
@@ -76,9 +74,13 @@ function countPercent() {
       const countDecimal = new Decimal(+count);
 
       if (sing === "-") {
-        result = lastCountDecimal.minus(lastCountDecimal.times(countDecimal).dividedBy(100));
+        result = lastCountDecimal.minus(
+          lastCountDecimal.times(countDecimal).dividedBy(100)
+        );
       } else if (sing === "+") {
-        result = lastCountDecimal.plus(lastCountDecimal.times(countDecimal).dividedBy(100));
+        result = lastCountDecimal.plus(
+          lastCountDecimal.times(countDecimal).dividedBy(100)
+        );
       } else if (sing === "×") {
         result = lastCountDecimal.times(countDecimal).dividedBy(100);
       } else if (sing === "÷") {
@@ -144,21 +146,27 @@ function getOperations(value) {
   countPercent();
 
   if (result) {
+    console.log(removeTrailingZeros(result.toFixed(7)))
+    input.value = removeTrailingZeros(result.toFixed(7));
+
     lastCount = result;
     result = "";
     count = "";
   }
 
   if (sing && lastCount && count && !result) {
+    const lastCountDecimal = new Decimal(+lastCount);
+    const countDecimal = new Decimal(+count);
+
     const result =
       sing === "×"
-        ? +lastCount * +count
+        ? lastCountDecimal.times(countDecimal)
         : sing === "+"
-        ? +lastCount + +count
+        ? lastCountDecimal.plus(countDecimal)
         : sing === "-"
-        ? +lastCount - +count
+        ? lastCountDecimal.minus(countDecimal)
         : sing === "÷"
-        ? +lastCount / +count
+        ? lastCountDecimal.dividedBy(countDecimal)
         : null;
 
     input.value = result;
@@ -172,6 +180,6 @@ function getOperations(value) {
 
 function removeTrailingZeros(number) {
   let str = number.toString();
-  let trimmed = str.replace(/\.?0+$/, '');
+  let trimmed = str.replace(/\.?0+$/, "");
   return trimmed;
 }
