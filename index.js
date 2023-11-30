@@ -24,11 +24,14 @@ function showNumber(event) {
     case "7":
     case "8":
     case "9":
+      count === "0" && (count = "")
       input.value === "0" && (input.value = "");
       typeNumber(event.target.innerText);
       break;
     case ".":
-      typeNumber(event.target.innerText);
+      if(!input.value.includes('.')) {
+        typeNumber(event.target.innerText);
+      }
       break;
     case "AC":
       resetValues();
@@ -133,6 +136,9 @@ function countNumber() {
 }
 
 function typeNumber(value) {
+  // if(typeof value === "number" && input.value !== 0) {
+    
+  // }
   if (sing) {
     count += value;
     input.value = count;
@@ -140,13 +146,13 @@ function typeNumber(value) {
     input.value += value;
     lastCount += value;
   }
+  
 }
 
 function getOperations(value) {
   countPercent();
 
   if (result) {
-    console.log(removeTrailingZeros(result.toFixed(7)))
     input.value = removeTrailingZeros(result.toFixed(7));
 
     lastCount = result;
