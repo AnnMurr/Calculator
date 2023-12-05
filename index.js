@@ -13,50 +13,31 @@ let result;
 let percent = false;
 
 function showNumber(event) {
-  switch (event.target.innerText) {
-    case "0":
-    case "1":
-    case "2":
-    case "3":
-    case "4":
-    case "5":
-    case "6":
-    case "7":
-    case "8":
-    case "9":
-      count === "0" && (count = "")
-      input.value === "0" && (input.value = "");
-      typeNumber(event.target.innerText);
-      break;
-    case ".":
-      if(!input.value.includes('.')) {
-        typeNumber(event.target.innerText);
-      }
-      break;
-    case "AC":
-      resetValues();
-      break;
-    case "×":
-    case "÷":
-    case "-":
-    case "+":
-      getOperations(event.target.innerText);
-      break;
-    case "=":
-      countNumber();
-      break;
-    case "+/-":
-      getNegativeOrPositiveNumber();
-      break;
-    case "%":
-      toglePercent();
-      break;
+  const value = event.target.innerText;
+  const numericValue = parseFloat(value);
+
+  if (!isNaN(numericValue)) {
+    count === "0" && (count = "");
+    input.value === "0" && (input.value = "");
+    typeNumber(value);
+  } else if (value === ".") {
+    !input.value.includes(".") && typeNumber(value);
+  } else if (value === "AC") {
+    resetValues();
+  } else if (value === "×" || value === "÷" || value === "-" || value === "+") {
+    getOperations(event.target.innerText);
+  } else if (value === "=") {
+    countNumber();
+  } else if (value === "+/-") {
+    getNegativeOrPositiveNumber();
+  } else if (value === "%") {
+    toglePercent();
   }
 }
 
 function toglePercent() {
   if (lastCount && !count) {
-    result = result = lastCount * 0.01;
+    result = lastCount * 0.01;
     input.value = result;
   } else {
     if (sing === "+" || sing === "-") {
@@ -106,39 +87,22 @@ function getNegativeOrPositiveNumber() {
 }
 
 function resetValues() {
-  lastCount = "";
-  count = "";
-  sing = "";
-  result = "";
+  lastCount = count = sing = result = "";
   input.value = "0";
 }
 
 function countNumber() {
-  const lastCountDecimal = new Decimal(+lastCount);
-  const countDecimal = new Decimal(+count);
   countPercent();
 
   if (result) {
     input.value = removeTrailingZeros(result.toFixed(7));
   } else if (lastCount && count && sing) {
-    result =
-      sing === "×"
-        ? lastCountDecimal.times(countDecimal)
-        : sing === "+"
-        ? lastCountDecimal.plus(countDecimal)
-        : sing === "-"
-        ? lastCountDecimal.minus(countDecimal)
-        : sing === "÷"
-        ? lastCountDecimal.dividedBy(countDecimal)
-        : null;
+    result = returnOperation();
     input.value = removeTrailingZeros(result.toFixed(7));
   }
 }
 
 function typeNumber(value) {
-  // if(typeof value === "number" && input.value !== 0) {
-    
-  // }
   if (sing) {
     count += value;
     input.value = count;
@@ -146,7 +110,6 @@ function typeNumber(value) {
     input.value += value;
     lastCount += value;
   }
-  
 }
 
 function getOperations(value) {
@@ -154,34 +117,33 @@ function getOperations(value) {
 
   if (result) {
     input.value = removeTrailingZeros(result.toFixed(7));
-
     lastCount = result;
-    result = "";
-    count = "";
+    result = count = "";
   }
 
   if (sing && lastCount && count && !result) {
-    const lastCountDecimal = new Decimal(+lastCount);
-    const countDecimal = new Decimal(+count);
-
-    const result =
-      sing === "×"
-        ? lastCountDecimal.times(countDecimal)
-        : sing === "+"
-        ? lastCountDecimal.plus(countDecimal)
-        : sing === "-"
-        ? lastCountDecimal.minus(countDecimal)
-        : sing === "÷"
-        ? lastCountDecimal.dividedBy(countDecimal)
-        : null;
-
-    input.value = result;
-    lastCount = result;
+    const resultOfOperation = returnOperation();
+    input.value = lastCount = resultOfOperation;
     count = "";
     sing = value;
   } else {
     sing = value;
   }
+}
+
+function returnOperation() {
+  const lastCountDecimal = new Decimal(+lastCount);
+  const countDecimal = new Decimal(+count);
+
+  return sing === "×"
+    ? lastCountDecimal.times(countDecimal)
+    : sing === "+"
+    ? lastCountDecimal.plus(countDecimal)
+    : sing === "-"
+    ? lastCountDecimal.minus(countDecimal)
+    : sing === "÷"
+    ? lastCountDecimal.dividedBy(countDecimal)
+    : null;
 }
 
 function removeTrailingZeros(number) {
