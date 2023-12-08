@@ -51,7 +51,7 @@
     gap: 10px;
 }
 
-.calculator__buttons :last-child > button {
+.calculator__buttons :last-child>button {
     width: 100%;
     background-color: #24a424;
     color: #fff;
@@ -115,6 +115,7 @@
 .calculator__square-root span sup small {
     font-size: 12px;
 }
+
 .calculator__square-root span span:last-child {
     border-top: 1px solid;
 }
