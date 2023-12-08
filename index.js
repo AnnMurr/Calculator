@@ -3,7 +3,7 @@ import Decimal from "decimal.js";
 const input = document.querySelector(".calculator__input");
 const btns = document.querySelectorAll(".calculator__btn");
 
-btns.forEach((btn) => btn.addEventListener("click", showNumber));
+btns.forEach((btn) => btn.addEventListener("click", showNumber, true));
 
 input.value = "0";
 let lastCount = "";
@@ -13,10 +13,19 @@ let result;
 let percent = false;
 
 function showNumber(event) {
-  const value = event.target.innerText;
+  const btn = event.target.closest('.calculator__btn');
+  const value = btn.innerText;
   const numericValue = parseFloat(value);
 
-  if (!isNaN(numericValue)) {
+  if (value === "10x") {
+    raiseTenToPower();
+  } else if (value === "1∕x") {
+    calculateReciprocal()
+  } else if (value === "2√x") {
+    calculateSquareRoot()
+  } else if (value === "3√x") {
+    calculateCubeRoot()
+  } else if (!isNaN(numericValue)) {
     count === "0" && (count = "");
     input.value === "0" && (input.value = "");
     typeNumber(value);
@@ -32,7 +41,17 @@ function showNumber(event) {
     getNegativeOrPositiveNumber();
   } else if (value === "%") {
     toglePercent();
-  }
+  } else if (value === "Rand") {
+    getRandomNamber();
+  } else if (value === "x2") {
+    toSquare();
+  } else if (value === "x3") {
+    raiseToThirdPower();
+  } else if (value === "xy") {
+    raiseToPower(event.target.innerText);
+  } else if (value === "ex") {
+    exponentToPower();
+  } 
 }
 
 function toglePercent() {
@@ -56,7 +75,6 @@ function countPercent() {
     if (lastCount) {
       const lastCountDecimal = new Decimal(+lastCount);
       const countDecimal = new Decimal(+count);
-
       if (sing === "-") {
         result = lastCountDecimal.minus(
           lastCountDecimal.times(countDecimal).dividedBy(100)
@@ -143,7 +161,63 @@ function returnOperation() {
     ? lastCountDecimal.minus(countDecimal)
     : sing === "÷"
     ? lastCountDecimal.dividedBy(countDecimal)
+    : sing === "xy"
+    ? lastCountDecimal.pow(countDecimal)
     : null;
+}
+
+function toSquare() {
+  const resultOfOperation = input.value * input.value;
+  valueAssignment(resultOfOperation);
+}
+
+function raiseToThirdPower() {
+  const resultOfOperation = input.value * input.value * input.value;
+  valueAssignment(resultOfOperation);
+}
+
+function getRandomNamber() {
+  const randomNum = Math.floor(Math.random() * 1000000);
+  valueAssignment(randomNum);
+}
+
+function raiseTenToPower() {
+  const resultOfOperation = Math.pow(10, +input.value);
+  valueAssignment(resultOfOperation);
+}
+
+function exponentToPower() {
+  const resultOfOperation = Math.exp(input.value);
+  valueAssignment(resultOfOperation);
+}
+
+function calculateReciprocal() {
+  const resultOfOperation = input.value = 1 / input.value
+  valueAssignment(resultOfOperation)
+}
+
+function calculateSquareRoot() {
+  const resultOfOperation = Math.sqrt(input.value);
+  valueAssignment(resultOfOperation)
+}
+
+function calculateCubeRoot() {
+  const resultOfOperation = Math.cbrt(input.value);
+  valueAssignment(resultOfOperation)
+}
+
+function raiseToPower(value) {
+ 
+  if (result) {
+    lastCount = result;
+    result = count = "";
+  }
+  sing = value;
+}
+
+function valueAssignment(value) {
+  result ? (result = value) : count ? (count = value) : (lastCount = value);
+  input.value = value;
 }
 
 function removeTrailingZeros(number) {

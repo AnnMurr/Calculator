@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="icon" href="./src/media/icons/favicon.svg" type="image/svg">
     <title>Document</title>
 </head>
+
 <body>
     <section class="calculator">
         <div class="container">
@@ -15,117 +17,165 @@
                     <div class="calculator__input-inner">
                         <input maxlength="10" class="calculator__input" type="text" disabled>
                     </div>
+                    <div class="calculator__panel">
 
-                    <div class="calculator__buttons">
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>AC</span>
-                            </button>
-                        </div>
-
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>+/-</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>%</span>
+                        <div class="calculator__openMore">
+                            <button class="calculator__openMore-btn">
+                                <img src="./src/media/icons/btn-arrow.svg">
                             </button>
                         </div>
 
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__signs">
-                                <span>&#247</span>
-                            </button>
+                        <div class="calculator__buttons-additional">
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span class="calculator__teg-random">Rand</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>x<sup><small>2</small></sup></span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>x<sup><small>3</small></sup></span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>10<sup><small>x</small></sup></span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num calculator__signs-power">
+                                    <span>x<sup><small>y</small></sup></span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>e<sup><small>x</small></sup></span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num ">
+                                    <span><sup><small>1</small></sup>&#8725;<sub><small>x</small></sub></span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num calculator__square-root">
+                                    <span><sup><small>2</small></sup><span>&#8730;</span><span>x</span></span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num calculator__square-root">
+                                    <span><sup><small>3</small></sup><span>&#8730;</span><span>x</span></span>
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>7</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>8</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>9</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__signs">
-                                <span>&#215</span>
-                            </button>
-                        </div>
-                        
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>4</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>5</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>6</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__signs">
-                                <span>-</span>
-                            </button>
-                        </div>
-                        
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>1</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>2</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>3</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__signs">
-                                <span>+</span>
-                            </button>
-                        </div>
-                        
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>0</span>
-                            </button>
-                        </div>
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>.</span>
-                            </button>
-                        </div>
-                        
-                        
-                        <div class="calculator__inner-btn">
-                            <button class="calculator__btn calculator__num">
-                                <span>=</span>
-                            </button>
+                        <div class="calculator__buttons">
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>AC</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>+/-</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>%</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__signs">
+                                    <span>&#247</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>7</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>8</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>9</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__signs">
+                                    <span>&#215</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>4</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>5</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>6</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__signs">
+                                    <span>-</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>1</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>2</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>3</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__signs">
+                                    <span>+</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>0</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>.</span>
+                                </button>
+                            </div>
+                            <div class="calculator__inner-btn">
+                                <button class="calculator__btn calculator__num">
+                                    <span>=</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                
             </div>
         </div>
     </section>
     <script type="module" src="./index.js"></script>
 </body>
+
 </html>
