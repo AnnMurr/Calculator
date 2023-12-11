@@ -63,7 +63,7 @@
 
 .calculator__buttons-additional {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(5, 1fr);
 
     gap: 10px;
@@ -110,6 +110,10 @@
 .calculator__teg-random {
     font-size: 13px;
     font-weight: 600;
+}
+
+.calculator__log10 {
+    font-size: 17px;
 }
 
 .calculator__square-root span sup small {

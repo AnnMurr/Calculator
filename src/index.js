@@ -31,6 +31,8 @@ function showNumber(event) {
     calculateRoot();
   } else if (value === "In") {
     calculateNaturalLog();
+  } else if (value === "log10") {
+    calculateLog10();
   }  else if (!isNaN(numericValue)) {
     count === "0" && (count = "");
     input.value === "0" && (input.value = "");
@@ -231,6 +233,11 @@ function calculateCubeRoot() {
 
 function calculateNaturalLog() {
   const resultOfOperation = Math.log(input.value);
+  valueAssignment(resultOfOperation);
+}
+
+function calculateLog10() {
+  const resultOfOperation = Math.log10(input.value);
   valueAssignment(resultOfOperation);
 }
 
