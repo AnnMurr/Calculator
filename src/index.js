@@ -8,24 +8,30 @@ btns.forEach((btn) => btn.addEventListener("click", showNumber, true));
 input.value = "0";
 let lastCount = "";
 let count = "";
+let raiseToPowerCount = "";
 let sing = "";
+let signraiseToPower = "";
 let result;
 let percent = false;
 
 function showNumber(event) {
-  const btn = event.target.closest('.calculator__btn');
+  const btn = event.target.closest(".calculator__btn");
   const value = btn.innerText;
   const numericValue = parseFloat(value);
 
   if (value === "10x") {
     raiseTenToPower();
   } else if (value === "1∕x") {
-    calculateReciprocal()
+    calculateReciprocal();
   } else if (value === "2√x") {
-    calculateSquareRoot()
+    calculateSquareRoot();
   } else if (value === "3√x") {
-    calculateCubeRoot()
-  } else if (!isNaN(numericValue)) {
+    calculateCubeRoot();
+  } else if (value === "y√x") {
+    calculateRoot();
+  } else if (value === "In") {
+    calculateNaturalLog();
+  }  else if (!isNaN(numericValue)) {
     count === "0" && (count = "");
     input.value === "0" && (input.value = "");
     typeNumber(value);
@@ -51,13 +57,13 @@ function showNumber(event) {
     raiseToPower(event.target.innerText);
   } else if (value === "ex") {
     exponentToPower();
-  } 
+  }
 }
 
 function toglePercent() {
   if (lastCount && !count) {
     result = lastCount * 0.01;
-    input.value = result;
+    input.value = removeTrailingZeros(result.toFixed(7));
   } else {
     if (sing === "+" || sing === "-") {
       const value = (+lastCount * +count) / 100;
@@ -114,14 +120,14 @@ function countNumber() {
 
   if (result) {
     input.value = removeTrailingZeros(result.toFixed(7));
-  } else if (lastCount && count && sing) {
+  } else if ((lastCount && count && sing) || signraiseToPower) {
     result = returnOperation();
     input.value = removeTrailingZeros(result.toFixed(7));
   }
 }
 
 function typeNumber(value) {
-  if (sing) {
+  if (sing || signraiseToPower) {
     count += value;
     input.value = count;
   } else {
@@ -139,9 +145,9 @@ function getOperations(value) {
     result = count = "";
   }
 
-  if (sing && lastCount && count && !result) {
+  if (sing || (signraiseToPower && lastCount && count && !result)) {
     const resultOfOperation = returnOperation();
-    input.value = lastCount = resultOfOperation;
+    input.value = lastCount = removeTrailingZeros(resultOfOperation.toFixed(7));
     count = "";
     sing = value;
   } else {
@@ -153,17 +159,34 @@ function returnOperation() {
   const lastCountDecimal = new Decimal(+lastCount);
   const countDecimal = new Decimal(+count);
 
-  return sing === "×"
-    ? lastCountDecimal.times(countDecimal)
-    : sing === "+"
-    ? lastCountDecimal.plus(countDecimal)
-    : sing === "-"
-    ? lastCountDecimal.minus(countDecimal)
-    : sing === "÷"
-    ? lastCountDecimal.dividedBy(countDecimal)
-    : sing === "xy"
-    ? lastCountDecimal.pow(countDecimal)
-    : null;
+  if (lastCount && count && raiseToPowerCount) {
+    const raiseToPowerCountDecimal = new Decimal(+raiseToPowerCount);
+    raiseToPowerCount = signraiseToPower = "";
+    const raiseToPowerResult = lastCountDecimal.pow(countDecimal);
+
+    return sing === "×"
+      ? raiseToPowerCountDecimal.times(raiseToPowerResult)
+      : sing === "+"
+      ? raiseToPowerCountDecimal.plus(raiseToPowerResult)
+      : sing === "-"
+      ? raiseToPowerCountDecimal.minus(raiseToPowerResult)
+      : sing === "÷"
+      ? raiseToPowerCountDecimal.dividedBy(raiseToPowerResult)
+      : null;
+  } else if (signraiseToPower) {
+    signraiseToPower = "";
+    return lastCountDecimal.pow(countDecimal);
+  } else {
+    return sing === "×"
+      ? lastCountDecimal.times(countDecimal)
+      : sing === "+"
+      ? lastCountDecimal.plus(countDecimal)
+      : sing === "-"
+      ? lastCountDecimal.minus(countDecimal)
+      : sing === "÷"
+      ? lastCountDecimal.dividedBy(countDecimal)
+      : null;
+  }
 }
 
 function toSquare() {
@@ -192,36 +215,52 @@ function exponentToPower() {
 }
 
 function calculateReciprocal() {
-  const resultOfOperation = input.value = 1 / input.value
-  valueAssignment(resultOfOperation)
+  const resultOfOperation = (input.value = 1 / input.value);
+  valueAssignment(resultOfOperation);
 }
 
 function calculateSquareRoot() {
   const resultOfOperation = Math.sqrt(input.value);
-  valueAssignment(resultOfOperation)
+  valueAssignment(resultOfOperation);
 }
 
 function calculateCubeRoot() {
   const resultOfOperation = Math.cbrt(input.value);
-  valueAssignment(resultOfOperation)
+  valueAssignment(resultOfOperation);
+}
+
+function calculateNaturalLog() {
+  const resultOfOperation = Math.log(input.value);
+  valueAssignment(resultOfOperation);
+}
+
+function calculateRoot() {
+  
 }
 
 function raiseToPower(value) {
- 
+  if (lastCount && sing) {
+    raiseToPowerCount = lastCount;
+    lastCount = count;
+    count = "";
+  }
   if (result) {
     lastCount = result;
     result = count = "";
   }
-  sing = value;
+  signraiseToPower = value;
 }
 
 function valueAssignment(value) {
   result ? (result = value) : count ? (count = value) : (lastCount = value);
-  input.value = value;
+  input.value = removeTrailingZeros(value.toFixed(7));
 }
 
 function removeTrailingZeros(number) {
   let str = number.toString();
   let trimmed = str.replace(/\.?0+$/, "");
-  return trimmed;
+  let res;
+  trimmed.length > 10 && (res = trimmed.slice(0, 13));
+
+  return res ? res : trimmed;
 }
