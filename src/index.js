@@ -33,6 +33,8 @@ function showNumber(event) {
     calculateNaturalLog();
   } else if (value === "log10") {
     calculateLog10();
+  } else if (value === "x!") {
+    getfactorial();
   }  else if (!isNaN(numericValue)) {
     count === "0" && (count = "");
     input.value === "0" && (input.value = "");
@@ -241,6 +243,20 @@ function calculateLog10() {
   valueAssignment(resultOfOperation);
 }
 
+function getfactorial() {
+  const factorialResult = calculateFactorial(input.value)
+  valueAssignment(factorialResult);
+}
+
+function calculateFactorial(value) {
+  if(value === 1) {
+    return 1
+  } else {
+    return value * calculateFactorial(value - 1)
+  }
+ 
+}
+
 function calculateRoot() {
   
 }
@@ -259,11 +275,13 @@ function raiseToPower(value) {
 }
 
 function valueAssignment(value) {
+  console.log(value)
   result ? (result = value) : count ? (count = value) : (lastCount = value);
   input.value = removeTrailingZeros(value.toFixed(7));
 }
 
 function removeTrailingZeros(number) {
+  console.log(number)
   let str = number.toString();
   let trimmed = str.replace(/\.?0+$/, "");
   let res;
