@@ -34,7 +34,7 @@
     border: none;
     border-radius: 5px;
     box-shadow: 3px 3px 3px #0000002b;
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
     text-align: center;
 }
@@ -63,9 +63,8 @@
 
 .calculator__buttons-additional {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(5, 1fr);
-
     gap: 10px;
 }
 
@@ -114,6 +113,10 @@
 
 .calculator__log10 {
     font-size: 17px;
+}
+
+.calculator__min-size {
+    font-size: 16px;
 }
 
 .calculator__square-root span sup small {

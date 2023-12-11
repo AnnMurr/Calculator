@@ -29,7 +29,7 @@ function showNumber(event) {
     calculateCubeRoot();
   } else if (value === "y√x") {
     calculateRoot();
-  } else if (value === "In") {
+  } else if (value === "ln") {
     calculateNaturalLog();
   } else if (value === "log10") {
     calculateLog10();
@@ -39,7 +39,15 @@ function showNumber(event) {
     calculateCos();
   } else if (value === "tan") {
     calculateTan();
-  } else if (value === "x!") {
+  }  else if (value === "cosh") {
+    calculateCosh();
+  } else if (value === "tanh") {
+    calculateTanh();
+  } else if (value === "sinh") {
+    calculateSinh();
+  } else if (value === "e") {
+    calculateExponential();
+  }  else if (value === "x!") {
     getfactorial();
   } else if (!isNaN(numericValue)) {
     count === "0" && (count = "");
@@ -269,6 +277,26 @@ function calculateCos() {
 function calculateTan() {
   const radians = (Math.PI / 180) * input.value;
   const resultOfOperation = Math.tan(radians);
+  valueAssignment(resultOfOperation);
+}
+
+function calculateExponential() {
+  const resultOfOperation = Math.E;
+  valueAssignment(resultOfOperation);
+}
+
+function calculateCosh() {
+  const resultOfOperation = Math.cosh(input.value);
+  valueAssignment(resultOfOperation);
+}
+
+function calculateTanh() {
+  const resultOfOperation = Math.tanh(input.value);
+  valueAssignment(resultOfOperation);
+}
+
+function calculateSinh() {
+  const resultOfOperation = Math.sinh(input.value);
   valueAssignment(resultOfOperation);
 }
 
