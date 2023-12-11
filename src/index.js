@@ -35,6 +35,8 @@ function showNumber(event) {
     calculateLog10();
   } else if (value === "sin") {
     calculateSin();
+  } else if (value === "cos") {
+    calculateCos();
   } else if (value === "x!") {
     getfactorial();
   } else if (!isNaN(numericValue)) {
@@ -253,6 +255,12 @@ function getfactorial() {
 function calculateSin() {
   const radians = (Math.PI / 180) * input.value;
   const resultOfOperation = Math.sin(radians);
+  valueAssignment(resultOfOperation);
+}
+
+function calculateCos() {
+  const radians = (Math.PI / 180) * input.value;
+  const resultOfOperation = Math.cos(radians);
   valueAssignment(resultOfOperation);
 }
 
