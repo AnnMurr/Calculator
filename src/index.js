@@ -33,9 +33,11 @@ function showNumber(event) {
     calculateNaturalLog();
   } else if (value === "log10") {
     calculateLog10();
+  } else if (value === "sin") {
+    calculateSin();
   } else if (value === "x!") {
     getfactorial();
-  }  else if (!isNaN(numericValue)) {
+  } else if (!isNaN(numericValue)) {
     count === "0" && (count = "");
     input.value === "0" && (input.value = "");
     typeNumber(value);
@@ -244,22 +246,25 @@ function calculateLog10() {
 }
 
 function getfactorial() {
-  const factorialResult = calculateFactorial(input.value)
+  const factorialResult = calculateFactorial(input.value);
   valueAssignment(factorialResult);
 }
 
-function calculateFactorial(value) {
-  if(value === 1) {
-    return 1
-  } else {
-    return value * calculateFactorial(value - 1)
-  }
- 
+function calculateSin() {
+  const radians = (Math.PI / 180) * input.value;
+  const resultOfOperation = Math.sin(radians);
+  valueAssignment(resultOfOperation);
 }
 
-function calculateRoot() {
-  
+function calculateFactorial(value) {
+  if (value === 1) {
+    return 1;
+  } else {
+    return value * calculateFactorial(value - 1);
+  }
 }
+
+function calculateRoot() {}
 
 function raiseToPower(value) {
   if (lastCount && sing) {
@@ -275,13 +280,13 @@ function raiseToPower(value) {
 }
 
 function valueAssignment(value) {
-  console.log(value)
+  console.log(value);
   result ? (result = value) : count ? (count = value) : (lastCount = value);
   input.value = removeTrailingZeros(value.toFixed(7));
 }
 
 function removeTrailingZeros(number) {
-  console.log(number)
+  console.log(number);
   let str = number.toString();
   let trimmed = str.replace(/\.?0+$/, "");
   let res;
