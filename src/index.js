@@ -9,8 +9,10 @@ input.value = "0";
 let lastCount = "";
 let count = "";
 let raiseToPowerCount = "";
-let sing = "";
 let signraiseToPower = "";
+let countRoot = "";
+let signRoot = "";
+let sing = "";
 let result;
 let percent = false;
 
@@ -28,7 +30,7 @@ function showNumber(event) {
   } else if (value === "3√x") {
     calculateCubeRoot();
   } else if (value === "y√x") {
-    calculateRoot();
+    calculateRoot(event.target.innerText);
   } else if (value === "ln") {
     calculateNaturalLog();
   } else if (value === "log10") {
@@ -39,7 +41,7 @@ function showNumber(event) {
     calculateCos();
   } else if (value === "tan") {
     calculateTan();
-  }  else if (value === "cosh") {
+  } else if (value === "cosh") {
     calculateCosh();
   } else if (value === "tanh") {
     calculateTanh();
@@ -47,18 +49,12 @@ function showNumber(event) {
     calculateSinh();
   } else if (value === "e") {
     calculateExponential();
-  }  else if (value === "x!") {
+  } else if (value === "x!") {
     getfactorial();
-  } else if (!isNaN(numericValue)) {
-    count === "0" && (count = "");
-    input.value === "0" && (input.value = "");
-    typeNumber(value);
   } else if (value === ".") {
     !input.value.includes(".") && typeNumber(value);
   } else if (value === "AC") {
     resetValues();
-  } else if (value === "×" || value === "÷" || value === "-" || value === "+") {
-    getOperations(event.target.innerText);
   } else if (value === "=") {
     countNumber();
   } else if (value === "+/-") {
@@ -75,6 +71,12 @@ function showNumber(event) {
     raiseToPower(event.target.innerText);
   } else if (value === "ex") {
     exponentToPower();
+  } else if (value === "×" || value === "÷" || value === "-" || value === "+") {
+    getOperations(event.target.innerText);
+  } else if (!isNaN(numericValue)) {
+    count === "0" && (count = "");
+    input.value === "0" && (input.value = "");
+    typeNumber(value);
   }
 }
 
@@ -138,14 +140,14 @@ function countNumber() {
 
   if (result) {
     input.value = removeTrailingZeros(result.toFixed(7));
-  } else if ((lastCount && count && sing) || signraiseToPower) {
+  } else if ((lastCount && count && sing) || signraiseToPower || signRoot) {
     result = returnOperation();
     input.value = removeTrailingZeros(result.toFixed(7));
   }
 }
 
 function typeNumber(value) {
-  if (sing || signraiseToPower) {
+  if (sing || signraiseToPower || signRoot) {
     count += value;
     input.value = count;
   } else {
@@ -163,7 +165,7 @@ function getOperations(value) {
     result = count = "";
   }
 
-  if (sing || (signraiseToPower && lastCount && count && !result)) {
+  if (sing || signraiseToPower || (signRoot && lastCount && count && !result)) {
     const resultOfOperation = returnOperation();
     input.value = lastCount = removeTrailingZeros(resultOfOperation.toFixed(7));
     count = "";
@@ -191,9 +193,28 @@ function returnOperation() {
       : sing === "÷"
       ? raiseToPowerCountDecimal.dividedBy(raiseToPowerResult)
       : null;
+  } else if (lastCount && count && countRoot) {
+    const countRootDecimal = new Decimal(+countRoot);
+    countRoot = signRoot = "";
+    const countRootResult = Math.pow(+lastCount, 1 / +countRoot);
+    const countRootResultDecimal = new Decimal(countRootResult);
+
+    return sing === "×"
+      ? countRootDecimal.times(countRootResultDecimal)
+      : sing === "+"
+      ? countRootDecimal.plus(countRootResultDecimal)
+      : sing === "-"
+      ? countRootDecimal.minus(countRootResultDecimal)
+      : sing === "÷"
+      ? countRootDecimal.dividedBy(countRootResultDecimal)
+      : null;
   } else if (signraiseToPower) {
     signraiseToPower = "";
     return lastCountDecimal.pow(countDecimal);
+  } else if (signRoot) {
+    signRoot = "";
+    const countRootResult = Math.pow(+lastCount, 1 / +count);
+    return Decimal(countRootResult);
   } else {
     return sing === "×"
       ? lastCountDecimal.times(countDecimal)
@@ -301,14 +322,21 @@ function calculateSinh() {
 }
 
 function calculateFactorial(value) {
-  if (value === 1) {
-    return 1;
-  } else {
-    return value * calculateFactorial(value - 1);
-  }
+  return value === 1 ? 1 : value * calculateFactorial(value - 1);
 }
 
-function calculateRoot() {}
+function calculateRoot(value) {
+  if (lastCount && sing) {
+    countRoot = lastCount;
+    lastCount = count;
+    count = "";
+  }
+  if (result) {
+    lastCount = result;
+    result = count = "";
+  }
+  signRoot = value;
+}
 
 function raiseToPower(value) {
   if (lastCount && sing) {
@@ -324,13 +352,11 @@ function raiseToPower(value) {
 }
 
 function valueAssignment(value) {
-  console.log(value);
   result ? (result = value) : count ? (count = value) : (lastCount = value);
   input.value = removeTrailingZeros(value.toFixed(7));
 }
 
 function removeTrailingZeros(number) {
-  console.log(number);
   let str = number.toString();
   let trimmed = str.replace(/\.?0+$/, "");
   let res;
@@ -338,3 +364,24 @@ function removeTrailingZeros(number) {
 
   return res ? res : trimmed;
 }
+
+const wrapper = document.querySelector(".wrapper");
+const btnOpenMoreWrap = document.querySelector(".calculator__openMore");
+const btnOpenMore = document.querySelector(".calculator__openMore-btn");
+const buttonsAdditional = document.querySelector(
+  ".calculator__buttons-additional"
+);
+
+btnOpenMore.addEventListener("click", function () {
+  if (!buttonsAdditional.classList.contains("active")) {
+    wrapper.style.maxWidth = "600px";
+    btnOpenMore.style.transform = "rotate(180deg)";
+    btnOpenMoreWrap.style.left = "30px";
+    setTimeout(() => buttonsAdditional.classList.add("active"), 1000);
+  } else {
+    wrapper.style.maxWidth = "330px";
+    btnOpenMore.style.transform = "rotate(0deg)";
+    btnOpenMoreWrap.style.left = "20px";
+    setTimeout(() => buttonsAdditional.classList.remove("active"), 0);
+  }
+});

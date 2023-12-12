@@ -4,9 +4,10 @@
 
 .wrapper {
     position: relative;
-    max-width: 600px;
+    max-width: 330px;
     margin: 0 auto;
     padding-top: 10%;
+    transition: all 1s ease;
 }
 
 .calculator__inner {
@@ -49,6 +50,7 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
+    margin-left: auto;
 }
 
 .calculator__buttons :last-child>button {
@@ -125,4 +127,16 @@
 
 .calculator__square-root span span:last-child {
     border-top: 1px solid;
+}
+
+.calculator__buttons-additional {
+    display: none;
+    opacity: 0;
+    transition: all 1s ease-in-out;
+}
+
+.calculator__buttons-additional.active {
+    opacity: 1;
+    display: grid;
+
 }
