@@ -29,6 +29,8 @@ function showNumber(event) {
     calculateSquareAndCubeRoot(value);
   } else if (value === "y√x" || value === "xy") {
     performPowerCalculation(value);
+  } else if (value === "x2" || value === "x3") {
+    toPower(value);
   } else if (value === "ln") {
     calculateNaturalLog();
   } else if (value === "log10") {
@@ -61,10 +63,6 @@ function showNumber(event) {
     toglePercent();
   } else if (value === "Rand") {
     getRandomNamber();
-  } else if (value === "x2") {
-    toSquare();
-  } else if (value === "x3") {
-    raiseToThirdPower();
   } else if (value === "ex") {
     exponentToPower();
   } else if (value === "×" || value === "÷" || value === "-" || value === "+") {
@@ -72,7 +70,6 @@ function showNumber(event) {
   } else if (!isNaN(numericValue)) {
     count === "0" && (count = "");
     input.value === "0" && (input.value = "");
-    console.log(input.value === "NaN");
     (input.value.includes("NaN") ||
       input.value.includes("Error") ||
       input.value.includes("Infinity")) &&
@@ -229,13 +226,24 @@ function returnOperation() {
   }
 }
 
-function toSquare() {
-  const resultOfOperation = input.value * input.value;
-  valueAssignment(resultOfOperation);
+function calculateFactorial(value) {
+  try {
+    return value === 1 ? 1 : value * calculateFactorial(value - 1);
+  } catch (e) {
+    console.error(e);
+  }
 }
 
-function raiseToThirdPower() {
-  const resultOfOperation = input.value * input.value * input.value;
+function getfactorial() {
+  const factorialResult = calculateFactorial(input.value);
+  valueAssignment(factorialResult);
+}
+
+function toPower(value) {
+  const resultOfOperation =
+    value === "x2"
+      ? input.value * input.value
+      : input.value * input.value * input.value;
   valueAssignment(resultOfOperation);
 }
 
@@ -273,19 +281,6 @@ function calculateNaturalLog() {
 function calculateLog10() {
   const resultOfOperation = Math.log10(input.value);
   valueAssignment(resultOfOperation);
-}
-
-function getfactorial() {
-  const factorialResult = calculateFactorial(input.value);
-  valueAssignment(factorialResult);
-}
-
-function calculateFactorial(value) {
-  try {
-    return value === 1 ? 1 : value * calculateFactorial(value - 1);
-  } catch (e) {
-    console.error(e);
-  }
 }
 
 function calculateSin() {
