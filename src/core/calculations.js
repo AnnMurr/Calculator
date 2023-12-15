@@ -27,8 +27,8 @@ function showNumber(event) {
     calculateReciprocal();
   } else if (value === "2√x" || value === "3√x") {
     calculateSquareAndCubeRoot(value);
-  } else if (value === "y√x") {
-    calculateRoot(event.target.innerText);
+  } else if (value === "y√x" || value === "xy") {
+    performPowerCalculation(value);
   } else if (value === "ln") {
     calculateNaturalLog();
   } else if (value === "log10") {
@@ -65,8 +65,6 @@ function showNumber(event) {
     toSquare();
   } else if (value === "x3") {
     raiseToThirdPower();
-  } else if (value === "xy") {
-    raiseToPower(event.target.innerText);
   } else if (value === "ex") {
     exponentToPower();
   } else if (value === "×" || value === "÷" || value === "-" || value === "+") {
@@ -262,9 +260,8 @@ function calculateReciprocal() {
 }
 
 function calculateSquareAndCubeRoot(value) {
-  const resultOfOperation = value === "2√x" 
-  ? Math.sqrt(input.value) 
-  : Math.cbrt(input.value);
+  const resultOfOperation =
+    value === "2√x" ? Math.sqrt(input.value) : Math.cbrt(input.value);
   valueAssignment(resultOfOperation);
 }
 
@@ -329,19 +326,9 @@ function calculateSinh() {
   valueAssignment(resultOfOperation);
 }
 
-function calculateRoot(value) {
-  processValues("countRoot", "signRoot", value);
-}
-
-function raiseToPower(value) {
-  processValues("raiseToPowerCount", "signraiseToPower", value);
-}
-
-function processValues(valueCount, valueSign, value) {
+function performPowerCalculation(value) {
   if (lastCount && sing) {
-    valueCount === "countRoot"
-      ? (countRoot = lastCount)
-      : (raiseToPowerCount = lastCount);
+    value === "y√x" ? (countRoot = lastCount) : (raiseToPowerCount = lastCount);
     lastCount = count;
     count = "";
   }
@@ -349,7 +336,7 @@ function processValues(valueCount, valueSign, value) {
     lastCount = result;
     result = count = "";
   }
-  valueSign === "signRoot" ? (signRoot = value) : (signraiseToPower = value);
+  value === "y√x" ? (signRoot = value) : (signraiseToPower = value);
 }
 
 function valueAssignment(value) {
