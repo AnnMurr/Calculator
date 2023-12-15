@@ -25,10 +25,8 @@ function showNumber(event) {
     raiseTenToPower();
   } else if (value === "1∕x") {
     calculateReciprocal();
-  } else if (value === "2√x") {
-    calculateSquareRoot();
-  } else if (value === "3√x") {
-    calculateCubeRoot();
+  } else if (value === "2√x" || value === "3√x") {
+    calculateSquareAndCubeRoot(value);
   } else if (value === "y√x") {
     calculateRoot(event.target.innerText);
   } else if (value === "ln") {
@@ -263,13 +261,10 @@ function calculateReciprocal() {
   valueAssignment(resultOfOperation);
 }
 
-function calculateSquareRoot() {
-  const resultOfOperation = Math.sqrt(input.value);
-  valueAssignment(resultOfOperation);
-}
-
-function calculateCubeRoot() {
-  const resultOfOperation = Math.cbrt(input.value);
+function calculateSquareAndCubeRoot(value) {
+  const resultOfOperation = value === "2√x" 
+  ? Math.sqrt(input.value) 
+  : Math.cbrt(input.value);
   valueAssignment(resultOfOperation);
 }
 
