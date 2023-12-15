@@ -30,6 +30,7 @@ function showNumber(event) {
   } else if (value === "3√x") {
     calculateCubeRoot();
   } else if (value === "y√x") {
+    // processOperation(event.target.innerText, "calculateRoot");
     calculateRoot(event.target.innerText);
   } else if (value === "ln") {
     calculateNaturalLog();
@@ -68,6 +69,7 @@ function showNumber(event) {
   } else if (value === "x3") {
     raiseToThirdPower();
   } else if (value === "xy") {
+    // processOperation(event.target.innerText, "raiseToPower");
     raiseToPower(event.target.innerText);
   } else if (value === "ex") {
     exponentToPower();
@@ -76,6 +78,11 @@ function showNumber(event) {
   } else if (!isNaN(numericValue)) {
     count === "0" && (count = "");
     input.value === "0" && (input.value = "");
+    console.log(input.value === "NaN");
+    (input.value.includes("NaN") ||
+      input.value.includes("Error") ||
+      input.value.includes("Infinity")) &&
+      (input.value = "");
     typeNumber(value);
   }
 }
@@ -196,7 +203,7 @@ function returnOperation() {
   } else if (lastCount && count && countRoot) {
     const countRootDecimal = new Decimal(+countRoot);
     countRoot = signRoot = "";
-    const countRootResult = Math.pow(+lastCount, 1 / +countRoot);
+    const countRootResult = Math.pow(+lastCount, 1 / +count);
     const countRootResultDecimal = new Decimal(countRootResult);
 
     return sing === "×"
@@ -283,6 +290,14 @@ function getfactorial() {
   valueAssignment(factorialResult);
 }
 
+function calculateFactorial(value) {
+  try {
+    return value === 1 ? 1 : value * calculateFactorial(value - 1);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 function calculateSin() {
   const radians = (Math.PI / 180) * input.value;
   const resultOfOperation = Math.sin(radians);
@@ -319,10 +334,6 @@ function calculateTanh() {
 function calculateSinh() {
   const resultOfOperation = Math.sinh(input.value);
   valueAssignment(resultOfOperation);
-}
-
-function calculateFactorial(value) {
-  return value === 1 ? 1 : value * calculateFactorial(value - 1);
 }
 
 function calculateRoot(value) {

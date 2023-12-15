@@ -117,6 +117,12 @@
     opacity: 0.6;
 }
 
+
+
+.calculator__inner-btn:hover {
+    opacity: 0.6;
+}
+
 .calculator__signs {
     background-color: #e04141f6;
     font-size: 30px;
@@ -127,6 +133,8 @@
     background-color: #fff;
     color: #a30b0b;
 }
+
+
 
 .calculator__teg-random {
     font-size: 13px;
@@ -159,3 +167,9 @@
     opacity: 1;
     display: grid;
 }
+
+.calculator__buttons:nth-child(1)>button {
+    background-color: #0da5cb !important;
+}
+
+
