@@ -167,9 +167,7 @@
     opacity: 1;
     display: grid;
 }
-
+/* 
 .calculator__buttons:nth-child(1)>button {
     background-color: #0da5cb !important;
-}
-
-
+} */

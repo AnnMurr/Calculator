@@ -30,7 +30,6 @@ function showNumber(event) {
   } else if (value === "3√x") {
     calculateCubeRoot();
   } else if (value === "y√x") {
-    // processOperation(event.target.innerText, "calculateRoot");
     calculateRoot(event.target.innerText);
   } else if (value === "ln") {
     calculateNaturalLog();
@@ -69,7 +68,6 @@ function showNumber(event) {
   } else if (value === "x3") {
     raiseToThirdPower();
   } else if (value === "xy") {
-    // processOperation(event.target.innerText, "raiseToPower");
     raiseToPower(event.target.innerText);
   } else if (value === "ex") {
     exponentToPower();
@@ -337,21 +335,18 @@ function calculateSinh() {
 }
 
 function calculateRoot(value) {
-  if (lastCount && sing) {
-    countRoot = lastCount;
-    lastCount = count;
-    count = "";
-  }
-  if (result) {
-    lastCount = result;
-    result = count = "";
-  }
-  signRoot = value;
+  processValues("countRoot", "signRoot", value);
 }
 
 function raiseToPower(value) {
+  processValues("raiseToPowerCount", "signraiseToPower", value);
+}
+
+function processValues(valueCount, valueSign, value) {
   if (lastCount && sing) {
-    raiseToPowerCount = lastCount;
+    valueCount === "countRoot"
+      ? (countRoot = lastCount)
+      : (raiseToPowerCount = lastCount);
     lastCount = count;
     count = "";
   }
@@ -359,7 +354,7 @@ function raiseToPower(value) {
     lastCount = result;
     result = count = "";
   }
-  signraiseToPower = value;
+  valueSign === "signRoot" ? (signRoot = value) : (signraiseToPower = value);
 }
 
 function valueAssignment(value) {
