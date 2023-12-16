@@ -35,12 +35,8 @@ function showNumber(event) {
     calculateNaturalLog();
   } else if (value === "log10") {
     calculateLog10();
-  } else if (value === "sin") {
-    calculateSin();
-  } else if (value === "cos") {
-    calculateCos();
-  } else if (value === "tan") {
-    calculateTan();
+  } else if (value === "sin" || value === "cos" || value === "tan") {
+    calculateTrigonometricFunction(value);
   } else if (value === "cosh" || value === "tanh" || value === "sinh") {
     calculateUniversalHyperbolic(value);
   } else if (value === "e") {
@@ -279,21 +275,33 @@ function calculateLog10() {
   valueAssignment(resultOfOperation);
 }
 
-function calculateSin() {
-  const radians = (Math.PI / 180) * input.value;
-  const resultOfOperation = Math.sin(radians);
-  valueAssignment(resultOfOperation);
-}
+// function calculateSin() {
+//   const radians = (Math.PI / 180) * input.value;
+//   const resultOfOperation = Math.sin(radians);
+//   valueAssignment(resultOfOperation);
+// }
 
-function calculateCos() {
-  const radians = (Math.PI / 180) * input.value;
-  const resultOfOperation = Math.cos(radians);
-  valueAssignment(resultOfOperation);
-}
+// function calculateCos() {
+//   const radians = (Math.PI / 180) * input.value;
+//   const resultOfOperation = Math.cos(radians);
+//   valueAssignment(resultOfOperation);
+// }
 
-function calculateTan() {
+// function calculateTan() {
+//   const radians = (Math.PI / 180) * input.value;
+//   const resultOfOperation = Math.tan(radians);
+//   valueAssignment(resultOfOperation);
+// }
+
+function calculateTrigonometricFunction(value) {
   const radians = (Math.PI / 180) * input.value;
-  const resultOfOperation = Math.tan(radians);
+  console.log(value)
+  const resultOfOperation =
+    value === "sin"
+      ? Math.sin(radians)
+      : value === "cos"
+      ? Math.cos(radians)
+      : Math.tan(radians);
   valueAssignment(resultOfOperation);
 }
 
