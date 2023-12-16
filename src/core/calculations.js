@@ -41,12 +41,8 @@ function showNumber(event) {
     calculateCos();
   } else if (value === "tan") {
     calculateTan();
-  } else if (value === "cosh") {
-    calculateCosh();
-  } else if (value === "tanh") {
-    calculateTanh();
-  } else if (value === "sinh") {
-    calculateSinh();
+  } else if (value === "cosh" || value === "tanh" || value === "sinh") {
+    calculateUniversalHyperbolic(value);
   } else if (value === "e") {
     calculateExponential();
   } else if (value === "x!") {
@@ -306,18 +302,13 @@ function calculateExponential() {
   valueAssignment(resultOfOperation);
 }
 
-function calculateCosh() {
-  const resultOfOperation = Math.cosh(input.value);
-  valueAssignment(resultOfOperation);
-}
-
-function calculateTanh() {
-  const resultOfOperation = Math.tanh(input.value);
-  valueAssignment(resultOfOperation);
-}
-
-function calculateSinh() {
-  const resultOfOperation = Math.sinh(input.value);
+function calculateUniversalHyperbolic(value) {
+  const resultOfOperation =
+    value === "cosh"
+      ? Math.cosh(input.value)
+      : value === "tanh"
+      ? Math.tanh(input.value)
+      : Math.sinh(input.value);
   valueAssignment(resultOfOperation);
 }
 
