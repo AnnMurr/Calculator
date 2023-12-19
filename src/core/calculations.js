@@ -21,7 +21,12 @@ function showNumber(event) {
   const value = btn.innerText;
   const numericValue = parseFloat(value);
 
-  if (value === "10x" || value === "log10" || value === "ex" || value === "ln") {
+  if (
+    value === "10x" ||
+    value === "log10" ||
+    value === "ex" ||
+    value === "ln"
+  ) {
     performExponentialAndLogarithmicOperation(value);
   } else if (value === "2√x" || value === "3√x") {
     calculateSquareAndCubeRoot(value);
@@ -33,12 +38,8 @@ function showNumber(event) {
     calculateTrigonometricFunction(value);
   } else if (value === "cosh" || value === "tanh" || value === "sinh") {
     calculateUniversalHyperbolic(value);
-  } else if (value === "1∕x") {
-    calculateReciprocal();
-  } else if (value === "e") {
-    calculateExponential();
-  } else if (value === "x!") {
-    getfactorial();
+  } else if (value === "1∕x" || value === "x!" || value === "e") {
+    performMathematicalOperation(value);
   } else if (value === ".") {
     !input.value.includes(".") && typeNumber(value);
   } else if (value === "AC") {
@@ -220,22 +221,12 @@ function calculateFactorial(value) {
   }
 }
 
-function getfactorial() {
-  const factorialResult = calculateFactorial(input.value);
-  valueAssignment(factorialResult);
-}
-
 function toPower(value) {
   const resultOfOperation =
     value === "x2"
       ? input.value * input.value
       : input.value * input.value * input.value;
   valueAssignment(resultOfOperation);
-}
-
-function getRandomNamber() {
-  const randomNum = Math.floor(Math.random() * 1000000);
-  valueAssignment(randomNum);
 }
 
 function performExponentialAndLogarithmicOperation(value) {
@@ -250,9 +241,18 @@ function performExponentialAndLogarithmicOperation(value) {
   valueAssignment(resultOfOperation);
 }
 
-function calculateReciprocal() {
-  const resultOfOperation = (input.value = 1 / input.value);
-  valueAssignment(resultOfOperation);
+function getRandomNamber() {
+  const randomNum = Math.floor(Math.random() * 1000000);
+  valueAssignment(randomNum);
+}
+
+function performMathematicalOperation(value) {
+  const resultOfOperation =
+    value === "1/x"
+      ? (input.value = 1 / input.value)
+      : value === "x!"
+      ? calculateFactorial(input.value)
+      : Math.E;
 }
 
 function calculateSquareAndCubeRoot(value) {
@@ -270,11 +270,6 @@ function calculateTrigonometricFunction(value) {
       : value === "cos"
       ? Math.cos(radians)
       : Math.tan(radians);
-  valueAssignment(resultOfOperation);
-}
-
-function calculateExponential() {
-  const resultOfOperation = Math.E;
   valueAssignment(resultOfOperation);
 }
 
