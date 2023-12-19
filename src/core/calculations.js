@@ -21,24 +21,20 @@ function showNumber(event) {
   const value = btn.innerText;
   const numericValue = parseFloat(value);
 
-  if (value === "10x") {
-    raiseTenToPower();
-  } else if (value === "1∕x") {
-    calculateReciprocal();
+  if (value === "10x" || value === "log10" || value === "ex" || value === "ln") {
+    performExponentialAndLogarithmicOperation(value);
   } else if (value === "2√x" || value === "3√x") {
     calculateSquareAndCubeRoot(value);
   } else if (value === "y√x" || value === "xy") {
     performPowerCalculation(value);
   } else if (value === "x2" || value === "x3") {
     toPower(value);
-  } else if (value === "ln") {
-    calculateNaturalLog();
-  } else if (value === "log10") {
-    calculateLog10();
   } else if (value === "sin" || value === "cos" || value === "tan") {
     calculateTrigonometricFunction(value);
   } else if (value === "cosh" || value === "tanh" || value === "sinh") {
     calculateUniversalHyperbolic(value);
+  } else if (value === "1∕x") {
+    calculateReciprocal();
   } else if (value === "e") {
     calculateExponential();
   } else if (value === "x!") {
@@ -55,8 +51,6 @@ function showNumber(event) {
     toglePercent();
   } else if (value === "Rand") {
     getRandomNamber();
-  } else if (value === "ex") {
-    exponentToPower();
   } else if (value === "×" || value === "÷" || value === "-" || value === "+") {
     getOperations(event.target.innerText);
   } else if (!isNaN(numericValue)) {
@@ -244,13 +238,15 @@ function getRandomNamber() {
   valueAssignment(randomNum);
 }
 
-function raiseTenToPower() {
-  const resultOfOperation = Math.pow(10, +input.value);
-  valueAssignment(resultOfOperation);
-}
-
-function exponentToPower() {
-  const resultOfOperation = Math.exp(input.value);
+function performExponentialAndLogarithmicOperation(value) {
+  const resultOfOperation =
+    value === "10x"
+      ? Math.pow(10, +input.value)
+      : value === "log10"
+      ? Math.log10(input.value)
+      : value === "ln"
+      ? Math.log(input.value)
+      : Math.exp(input.value);
   valueAssignment(resultOfOperation);
 }
 
@@ -265,37 +261,9 @@ function calculateSquareAndCubeRoot(value) {
   valueAssignment(resultOfOperation);
 }
 
-function calculateNaturalLog() {
-  const resultOfOperation = Math.log(input.value);
-  valueAssignment(resultOfOperation);
-}
-
-function calculateLog10() {
-  const resultOfOperation = Math.log10(input.value);
-  valueAssignment(resultOfOperation);
-}
-
-// function calculateSin() {
-//   const radians = (Math.PI / 180) * input.value;
-//   const resultOfOperation = Math.sin(radians);
-//   valueAssignment(resultOfOperation);
-// }
-
-// function calculateCos() {
-//   const radians = (Math.PI / 180) * input.value;
-//   const resultOfOperation = Math.cos(radians);
-//   valueAssignment(resultOfOperation);
-// }
-
-// function calculateTan() {
-//   const radians = (Math.PI / 180) * input.value;
-//   const resultOfOperation = Math.tan(radians);
-//   valueAssignment(resultOfOperation);
-// }
-
 function calculateTrigonometricFunction(value) {
   const radians = (Math.PI / 180) * input.value;
-  console.log(value)
+  console.log(value);
   const resultOfOperation =
     value === "sin"
       ? Math.sin(radians)
