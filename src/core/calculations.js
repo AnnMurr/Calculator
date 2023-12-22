@@ -40,8 +40,8 @@ function showNumber(event) {
     calculateUniversalHyperbolic(value);
   } else if (value === "1∕x" || value === "x!") {
     performMathematicalOperation(value);
-  } else if(value === "e") {
-    calculateExponential()
+  } else if (value === "e") {
+    calculateExponential();
   } else if (value === ".") {
     typeNumber(value);
   } else if (value === "AC") {
@@ -64,7 +64,10 @@ function showNumber(event) {
 
 function calculateExponential() {
   const resultOfOperation = Math.E;
-  input.value = ""
+  input.value = count = "";
+
+  console.log(resultOfOperation)
+  console.log(input.value)
   typeNumber(resultOfOperation);
 }
 
@@ -78,26 +81,28 @@ function removeValue() {
 }
 
 function typeNumber(value) {
-  if (result) {
-    result = count = lastCount = "";
-    if (value === ".") {
-      input.value = lastCount = "0.";
+  if (input.value.length < 8) {
+    if (result) {
+      result = count = lastCount = "";
+      if (value === ".") {
+        input.value = lastCount = "0.";
+      } else {
+        input.value = lastCount += value;
+      }
+    } else if (sing || signraiseToPower || signRoot) {
+      if (value === "." && !count) {
+        input.value = count = "0.";
+      } else {
+        count += value;
+        input.value = removeTrailingZeros(count);
+      }
     } else {
-      input.value = lastCount += value;
-    }
-  } else if (sing || signraiseToPower || signRoot) {
-    if (value === "." && !count) {
-      input.value = count = "0.";
-    } else {
-      count += value;
-      input.value = removeTrailingZeros(count);
-    }
-  } else {
-    if (value === "." && lastCount.toString().includes(".")) {
-      input.value = lastCount = input.value;
-    } else {
-      input.value += value;
-      lastCount += value;
+      if (value === "." && lastCount.toString().includes(".")) {
+        input.value = lastCount = input.value;
+      } else {
+        input.value += value;
+        lastCount += value;
+      }
     }
   }
 }
@@ -150,7 +155,7 @@ function getNegativeOrPositiveNumber() {
   if (target) {
     Number(target);
     target = target >= 0 ? `-${target}` : `${target.toString().slice(1)}`;
-    input.value = target;
+    input.value = removeTrailingZeros(parseFloat(target).toFixed(7));
   }
 
   result ? (result = target) : count ? (count = target) : (lastCount = target);
@@ -294,9 +299,7 @@ function performMathematicalOperation(value) {
   const resultOfOperation =
     value === "1∕x"
       ? (input.value = 1 / input.value)
-      : value === "x!"
-      ? calculateFactorial(input.value)
-      : Math.E;
+      : calculateFactorial(input.value)
 
   valueAssignment(resultOfOperation);
 }
@@ -337,6 +340,7 @@ function performPowerCalculation(value) {
 }
 
 function valueAssignment(value) {
+
   if (
     value.toString() !== "NaN" &&
     value.toString() !== "Error" &&
@@ -351,7 +355,7 @@ function valueAssignment(value) {
 
 function removeTrailingZeros(number) {
   let str = number.toString();
-  let trimmed = str.replace(/\.?0+$/, "");
+  let trimmed = str.replace(/(?:\.0*|(\.\d+?)0+)$/, "$1");
   let res;
   trimmed.length > 10 && (res = trimmed.slice(0, 13));
   return res ? res : trimmed;
