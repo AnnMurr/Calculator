@@ -55,18 +55,44 @@ function showNumber(event) {
   } else if (value === "×" || value === "÷" || value === "-" || value === "+") {
     getOperations(event.target.innerText);
   } else if (!isNaN(numericValue)) {
-    count === "0" && (count = "");
-    input.value === "0" && (input.value = "");
-    (input.value.includes("NaN") ||
-      input.value.includes("Error") ||
-      input.value.includes("Infinity")) &&
-      (input.value = "");
+    removeValue();
     typeNumber(value);
   }
 }
 
+function removeValue() {
+  count === "0" && (count = "");
+  (input.value === "0" ||
+    input.value.includes("NaN") ||
+    input.value.includes("Error") ||
+    input.value.includes("Infinity")) &&
+    (input.value = "");
+}
+
+function typeNumber(value) {
+  if (result) {
+    if (value === ".") {
+      lastCount = result;
+      result = count = "";
+      input.value = lastCount += value;
+    } else {
+      result = count = lastCount = "";
+      input.value = lastCount += value;
+    }
+  } else if (sing || signraiseToPower || signRoot) {
+    count += value;
+    input.value = count;
+  } else {
+    input.value += value;
+    lastCount += value;
+  }
+}
+
 function toglePercent() {
-  if (lastCount && !count) {
+  if (result) {
+    result = result * 0.01;
+    input.value = removeTrailingZeros(result.toFixed(7));
+  } else if (lastCount && !count) {
     result = lastCount * 0.01;
     input.value = removeTrailingZeros(result.toFixed(7));
   } else {
@@ -108,7 +134,8 @@ function getNegativeOrPositiveNumber() {
   let target = result || count || lastCount;
 
   if (target) {
-    target = +target >= 0 ? `-${target}` : `${target.slice(1)}`;
+    Number(target);
+    target = target >= 0 ? `-${target}` : `${target.toString().slice(1)}`;
     input.value = target;
   }
 
@@ -131,33 +158,26 @@ function countNumber() {
   }
 }
 
-function typeNumber(value) {
-  if (sing || signraiseToPower || signRoot) {
-    count += value;
-    input.value = count;
-  } else {
-    input.value += value;
-    lastCount += value;
-  }
-}
-
 function getOperations(value) {
   countPercent();
 
   if (result) {
-    input.value = removeTrailingZeros(result.toFixed(7));
+    input.value = removeTrailingZeros(result);
     lastCount = result;
     result = count = "";
-  }
-
-  if (sing || signraiseToPower || (signRoot && lastCount && count && !result)) {
+  } else if (
+    sing ||
+    signraiseToPower ||
+    (signRoot && lastCount && count && !result)
+  ) {
+    console.log(lastCount);
     const resultOfOperation = returnOperation();
     input.value = lastCount = removeTrailingZeros(resultOfOperation.toFixed(7));
     count = "";
     sing = value;
-  } else {
-    sing = value;
   }
+
+  sing = value;
 }
 
 function returnOperation() {
@@ -201,15 +221,19 @@ function returnOperation() {
     const countRootResult = Math.pow(+lastCount, 1 / +count);
     return Decimal(countRootResult);
   } else {
-    return sing === "×"
-      ? lastCountDecimal.times(countDecimal)
-      : sing === "+"
-      ? lastCountDecimal.plus(countDecimal)
-      : sing === "-"
-      ? lastCountDecimal.minus(countDecimal)
-      : sing === "÷"
-      ? lastCountDecimal.dividedBy(countDecimal)
-      : null;
+    const operationResult =
+      sing === "×"
+        ? lastCountDecimal.times(countDecimal)
+        : sing === "+"
+        ? lastCountDecimal.plus(countDecimal)
+        : sing === "-"
+        ? lastCountDecimal.minus(countDecimal)
+        : sing === "÷"
+        ? lastCountDecimal.dividedBy(countDecimal)
+        : null;
+
+    sing = "";
+    return operationResult;
   }
 }
 
@@ -219,6 +243,17 @@ function calculateFactorial(value) {
   } catch (e) {
     console.error(e);
   }
+}
+
+function getRandomNamber() {
+  const randomNum = Math.floor(Math.random() * 1000000);
+  valueAssignment(randomNum);
+}
+
+function calculateSquareAndCubeRoot(value) {
+  const resultOfOperation =
+    value === "2√x" ? Math.sqrt(input.value) : Math.cbrt(input.value);
+  valueAssignment(resultOfOperation);
 }
 
 function toPower(value) {
@@ -241,23 +276,14 @@ function performExponentialAndLogarithmicOperation(value) {
   valueAssignment(resultOfOperation);
 }
 
-function getRandomNamber() {
-  const randomNum = Math.floor(Math.random() * 1000000);
-  valueAssignment(randomNum);
-}
-
 function performMathematicalOperation(value) {
   const resultOfOperation =
-    value === "1/x"
+    value === "1∕x"
       ? (input.value = 1 / input.value)
       : value === "x!"
       ? calculateFactorial(input.value)
       : Math.E;
-}
 
-function calculateSquareAndCubeRoot(value) {
-  const resultOfOperation =
-    value === "2√x" ? Math.sqrt(input.value) : Math.cbrt(input.value);
   valueAssignment(resultOfOperation);
 }
 
@@ -297,8 +323,16 @@ function performPowerCalculation(value) {
 }
 
 function valueAssignment(value) {
-  result ? (result = value) : count ? (count = value) : (lastCount = value);
-  input.value = removeTrailingZeros(value.toFixed(7));
+  if (
+    value.toString() !== "NaN" &&
+    value.toString() !== "Error" &&
+    value.toString() !== "Infinity"
+  ) {
+    result ? (result = value) : count ? (count = value) : (lastCount = value);
+    input.value = value;
+  } else {
+    input.value = value;
+  }
 }
 
 function removeTrailingZeros(number) {
@@ -306,6 +340,5 @@ function removeTrailingZeros(number) {
   let trimmed = str.replace(/\.?0+$/, "");
   let res;
   trimmed.length > 10 && (res = trimmed.slice(0, 13));
-
   return res ? res : trimmed;
 }
