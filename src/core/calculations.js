@@ -65,9 +65,6 @@ function showNumber(event) {
 function calculateExponential() {
   const resultOfOperation = Math.E;
   input.value = count = "";
-
-  console.log(resultOfOperation)
-  console.log(input.value)
   typeNumber(resultOfOperation);
 }
 
@@ -299,14 +296,13 @@ function performMathematicalOperation(value) {
   const resultOfOperation =
     value === "1∕x"
       ? (input.value = 1 / input.value)
-      : calculateFactorial(input.value)
+      : calculateFactorial(input.value);
 
   valueAssignment(resultOfOperation);
 }
 
 function calculateTrigonometricFunction(value) {
   const radians = (Math.PI / 180) * input.value;
-  console.log(value);
   const resultOfOperation =
     value === "sin"
       ? Math.sin(radians)
@@ -340,7 +336,6 @@ function performPowerCalculation(value) {
 }
 
 function valueAssignment(value) {
-
   if (
     value.toString() !== "NaN" &&
     value.toString() !== "Error" &&
