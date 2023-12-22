@@ -64,6 +64,7 @@ function showNumber(event) {
 
 function calculateExponential() {
   const resultOfOperation = Math.E;
+  input.value = ""
   typeNumber(resultOfOperation);
 }
 
@@ -89,7 +90,7 @@ function typeNumber(value) {
       input.value = count = "0.";
     } else {
       count += value;
-      input.value = count;
+      input.value = removeTrailingZeros(count);
     }
   } else {
     if (value === "." && lastCount.toString().includes(".")) {
@@ -342,9 +343,9 @@ function valueAssignment(value) {
     value.toString() !== "Infinity"
   ) {
     result ? (result = value) : count ? (count = value) : (lastCount = value);
-    input.value = value;
+    input.value = removeTrailingZeros(value);
   } else {
-    input.value = value;
+    input.value = removeTrailingZeros(value);
   }
 }
 
