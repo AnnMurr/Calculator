@@ -38,8 +38,10 @@ function showNumber(event) {
     calculateTrigonometricFunction(value);
   } else if (value === "cosh" || value === "tanh" || value === "sinh") {
     calculateUniversalHyperbolic(value);
-  } else if (value === "1∕x" || value === "x!" || value === "e") {
+  } else if (value === "1∕x" || value === "x!") {
     performMathematicalOperation(value);
+  } else if(value === "e") {
+    calculateExponential()
   } else if (value === ".") {
     typeNumber(value);
   } else if (value === "AC") {
@@ -58,6 +60,11 @@ function showNumber(event) {
     removeValue();
     typeNumber(value);
   }
+}
+
+function calculateExponential() {
+  const resultOfOperation = Math.E;
+  typeNumber(resultOfOperation);
 }
 
 function removeValue() {
@@ -168,7 +175,7 @@ function getOperations(value) {
   countPercent();
 
   if (result) {
-    input.value = removeTrailingZeros(result);
+    input.value = removeTrailingZeros(parseFloat(result).toFixed(7));
     lastCount = result;
     result = count = "";
   } else if (
