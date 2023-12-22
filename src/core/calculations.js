@@ -81,11 +81,9 @@ function typeNumber(value) {
   if (input.value.length < 8) {
     if (result) {
       result = count = lastCount = "";
-      if (value === ".") {
-        input.value = lastCount = "0.";
-      } else {
-        input.value = lastCount += value;
-      }
+      value === "."
+        ? (input.value = lastCount = "0.")
+        : (input.value = lastCount += value);
     } else if (sing || signraiseToPower || signRoot) {
       if (value === "." && !count) {
         input.value = count = "0.";
@@ -204,31 +202,15 @@ function returnOperation() {
     const raiseToPowerCountDecimal = new Decimal(+raiseToPowerCount);
     raiseToPowerCount = signraiseToPower = "";
     const raiseToPowerResult = lastCountDecimal.pow(countDecimal);
-
-    return sing === "×"
-      ? raiseToPowerCountDecimal.times(raiseToPowerResult)
-      : sing === "+"
-      ? raiseToPowerCountDecimal.plus(raiseToPowerResult)
-      : sing === "-"
-      ? raiseToPowerCountDecimal.minus(raiseToPowerResult)
-      : sing === "÷"
-      ? raiseToPowerCountDecimal.dividedBy(raiseToPowerResult)
-      : null;
+    const operationResult = calculateOperations(raiseToPowerCountDecimal, raiseToPowerResult)
+    return operationResult
   } else if (lastCount && count && countRoot) {
     const countRootDecimal = new Decimal(+countRoot);
     countRoot = signRoot = "";
     const countRootResult = Math.pow(+lastCount, 1 / +count);
     const countRootResultDecimal = new Decimal(countRootResult);
-
-    return sing === "×"
-      ? countRootDecimal.times(countRootResultDecimal)
-      : sing === "+"
-      ? countRootDecimal.plus(countRootResultDecimal)
-      : sing === "-"
-      ? countRootDecimal.minus(countRootResultDecimal)
-      : sing === "÷"
-      ? countRootDecimal.dividedBy(countRootResultDecimal)
-      : null;
+    const operationResult = calculateOperations(countRootDecimal, countRootResultDecimal)
+    return operationResult
   } else if (signraiseToPower) {
     signraiseToPower = "";
     return lastCountDecimal.pow(countDecimal);
@@ -237,20 +219,22 @@ function returnOperation() {
     const countRootResult = Math.pow(+lastCount, 1 / +count);
     return Decimal(countRootResult);
   } else {
-    const operationResult =
-      sing === "×"
-        ? lastCountDecimal.times(countDecimal)
-        : sing === "+"
-        ? lastCountDecimal.plus(countDecimal)
-        : sing === "-"
-        ? lastCountDecimal.minus(countDecimal)
-        : sing === "÷"
-        ? lastCountDecimal.dividedBy(countDecimal)
-        : null;
-
+    const operationResult = calculateOperations(lastCountDecimal, countDecimal)
     sing = "";
     return operationResult;
   }
+}
+
+function calculateOperations(firstCount, secondCount) {
+  return sing === "×"
+  ? firstCount.times(secondCount)
+  : sing === "+"
+  ? firstCount.plus(secondCount)
+  : sing === "-"
+  ? firstCount.minus(secondCount)
+  : sing === "÷"
+  ? firstCount.dividedBy(secondCount)
+  : null;
 }
 
 function calculateFactorial(value) {
