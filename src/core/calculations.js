@@ -41,7 +41,7 @@ function showNumber(event) {
   } else if (value === "1∕x" || value === "x!" || value === "e") {
     performMathematicalOperation(value);
   } else if (value === ".") {
-    !input.value.includes(".") && typeNumber(value);
+    typeNumber(value);
   } else if (value === "AC") {
     resetValues();
   } else if (value === "=") {
@@ -71,20 +71,26 @@ function removeValue() {
 
 function typeNumber(value) {
   if (result) {
+    result = count = lastCount = "";
     if (value === ".") {
-      lastCount = result;
-      result = count = "";
-      input.value = lastCount += value;
+      input.value = lastCount = "0.";
     } else {
-      result = count = lastCount = "";
       input.value = lastCount += value;
     }
   } else if (sing || signraiseToPower || signRoot) {
-    count += value;
-    input.value = count;
+    if (value === "." && !count) {
+      input.value = count = "0.";
+    } else {
+      count += value;
+      input.value = count;
+    }
   } else {
-    input.value += value;
-    lastCount += value;
+    if (value === "." && lastCount.toString().includes(".")) {
+      input.value = lastCount = input.value;
+    } else {
+      input.value += value;
+      lastCount += value;
+    }
   }
 }
 
